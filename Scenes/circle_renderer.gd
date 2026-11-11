@@ -15,6 +15,9 @@ signal miss_registered
 func setup(new_config: CircleConfig, mapped_action: String):
 	config = new_config
 	action_name = mapped_action
+	for target in active_targets:
+		if is_instance_valid(target.node):
+			target.node.queue_free()
 	active_targets.clear()
 	current_angle = 0.0
 	hits_achieved = 0
@@ -35,6 +38,10 @@ func _process(delta: float) -> void:
 		var movement = target.data.speed * target.data.direction * delta
 		target.angle = wrapf(target.angle + movement, 0, TAU)
 		
+		target.node.position = Vector2.from_angle(target.angle) * config.radius
+		
+		target.node.rotation = target.angle
+		
 	if active_targets.size() < config.max_targets_rendered and config.possible_targets.size() > 0:
 		spawn_target()
 	
@@ -43,9 +50,37 @@ func _process(delta: float) -> void:
 func spawn_target():
 	var random_config = config.possible_targets.pick_random()
 	var random_angle = config.spawn_angles.pick_random()
+	
+	var mask_node = Sprite2D.new()
+	mask_node.clip_children = CanvasItem.CLIP_CHILDREN_ONLY
+	
+	var tex = GradientTexture2D.new()
+	tex.width = int(random_config.radius * 2)
+	tex.height = int(random_config.radius * 2)
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	
+	var grad = Gradient.new()
+	grad.offsets = [0.0, 0.95, 1.0]
+	grad.colors = [Color.WHITE, Color.WHITE, Color.TRANSPARENT]
+	tex.gradient = grad
+	mask_node.texture = tex
+	
+	var sprite_node = AnimatedSprite2D.new()
+	if random_config.frames != null:
+		sprite_node.sprite_frames = random_config.frames
+		sprite_node.play(random_config.animation_name)
+	
+	sprite_node.scale = random_config.scale
+	
+	mask_node.add_child(sprite_node)
+	add_child(mask_node) 
+	
 	active_targets.append({
 		"angle": random_angle,
-		"data": random_config
+		"data": random_config,
+		"node": mask_node 
 	})
 
 func _input(event: InputEvent) -> void:
@@ -71,11 +106,6 @@ func _draw():
 	if config == null: return
 	
 	draw_arc(Vector2.ZERO, config.radius, 0, TAU, 64, Color.DIM_GRAY, 2.0)
-	
-	for target in active_targets:
-		var target_pos = Vector2.from_angle(target.angle) * config.radius
-		draw_circle(target_pos, 8.0, target.data.color)
-		
 	
 	var cursor_pos = Vector2.from_angle(current_angle) * config.radius
 	draw_circle(cursor_pos, 10.0, Color.WHITE)

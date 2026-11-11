@@ -1,8 +1,22 @@
 [gd_resource type="Resource" script_class="TargetConfig" format=3 uid="uid://orb5ov5ysbik"]
 
 [ext_resource type="Script" uid="uid://dou45yv1fe8fn" path="res://Target Resources/target_config.gd" id="1_kp045"]
+[ext_resource type="Texture2D" uid="uid://cnus0dofopstx" path="res://icon.svg" id="1_yovib"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1350r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yovib")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [resource]
 script = ExtResource("1_kp045")
+radius = 10.0
 direction = -1
+frames = SubResource("SpriteFrames_1350r")
 metadata/_custom_type_script = "uid://dou45yv1fe8fn"

@@ -45,5 +45,5 @@ func _on_miss():
 
 func _on_level_won():
 	current_state = GameState.LEVEL_WON
-	message_label.text = "Level Complete!\nPrepping power-ups..."
+	message_label.text = "Level Complete!"
 	circle_renderer.set_process(false)
