@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c4j30a38yir2r"]
+
+[ext_resource type="Script" uid="uid://cel456l8b8nwp" path="res://Scenes/circle_renderer.gd" id="1_kul28"]
+
+[node name="CircleRenderer" type="Node2D" unique_id=2100775280]
+script = ExtResource("1_kul28")

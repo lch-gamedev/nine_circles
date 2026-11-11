@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TargetConfig" format=3 uid="uid://orb5ov5ysbik"]
+
+[ext_resource type="Script" uid="uid://dou45yv1fe8fn" path="res://Target Resources/target_config.gd" id="1_kp045"]
+
+[resource]
+script = ExtResource("1_kp045")
+direction = -1
+metadata/_custom_type_script = "uid://dou45yv1fe8fn"

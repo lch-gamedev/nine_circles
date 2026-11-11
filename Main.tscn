@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b5hgoef42svgo"]
+
+[ext_resource type="Script" uid="uid://b88k7e3enehdh" path="res://main.gd" id="1_glv2v"]
+[ext_resource type="Resource" uid="uid://dbw1ha166on5v" path="res://Circle Resources/circle_1.tres" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://c4j30a38yir2r" path="res://Scenes/CircleRenderer.tscn" id="2_uu6xs"]
+
+[node name="Main" type="Node2D" unique_id=955545203]
+script = ExtResource("1_glv2v")
+level_1_config = ExtResource("2_r0du0")
+
+[node name="CircleRenderer" parent="." unique_id=2100775280 instance=ExtResource("2_uu6xs")]
+position = Vector2(576, 324)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=967881262]
+
+[node name="MessageLabel" type="Label" parent="CanvasLayer" unique_id=492958324]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64

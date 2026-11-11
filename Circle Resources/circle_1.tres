@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CircleConfig" format=3 uid="uid://dbw1ha166on5v"]
+
+[ext_resource type="Script" uid="uid://dou45yv1fe8fn" path="res://Target Resources/target_config.gd" id="1_5bl50"]
+[ext_resource type="Script" uid="uid://d3wqlj1dbef6u" path="res://Circle Resources/circle_config.gd" id="1_tcj0e"]
+[ext_resource type="Resource" uid="uid://orb5ov5ysbik" path="res://Target Resources/base_target.tres" id="2_dgtqs"]
+
+[resource]
+script = ExtResource("1_tcj0e")
+possible_targets = Array[ExtResource("1_5bl50")]([ExtResource("2_dgtqs")])
+metadata/_custom_type_script = "uid://d3wqlj1dbef6u"
