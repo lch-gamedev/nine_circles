@@ -16,7 +16,6 @@ animations = [{
 
 [resource]
 script = ExtResource("1_kp045")
-radius = 10.0
 direction = -1
 frames = SubResource("SpriteFrames_1350r")
 metadata/_custom_type_script = "uid://dou45yv1fe8fn"

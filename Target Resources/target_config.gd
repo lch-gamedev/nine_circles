@@ -6,3 +6,7 @@ class_name TargetConfig extends Resource
 @export var frames: SpriteFrames
 @export var animation_name: String = "default"
 @export var scale: Vector2 = Vector2(1, 1)
+
+@export_group("Hit Effects")
+@export var hit_sound: AudioStream
+@export var death_animation_name: String = "death"

@@ -3,6 +3,7 @@ class_name CircleRenderer extends Node2D
 var config: CircleConfig
 var action_name: String = ""
 
+var cursor_node: Sprite2D
 var current_angle: float = 0.0
 var hits_achieved: int = 0
 
@@ -18,6 +19,25 @@ func setup(new_config: CircleConfig, mapped_action: String):
 	for target in active_targets:
 		if is_instance_valid(target.node):
 			target.node.queue_free()
+	
+	if is_instance_valid(cursor_node):
+		cursor_node.queue_free()
+	
+	cursor_node = Sprite2D.new()
+	cursor_node.z_index = 100		
+	var tex = GradientTexture2D.new()
+	tex.width = 20
+	tex.height = 20
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	var grad = Gradient.new()
+	grad.offsets = [0.0, 0.95, 1.0]
+	grad.colors = [Color.WHITE, Color.WHITE, Color.TRANSPARENT]
+	tex.gradient = grad
+	cursor_node.texture = tex
+	add_child(cursor_node)
+	
 	active_targets.clear()
 	current_angle = 0.0
 	hits_achieved = 0
@@ -33,6 +53,9 @@ func _process(delta: float) -> void:
 	if config == null or action_name == "": return
 	
 	current_angle = wrapf(current_angle + config.cursor_speed * delta, 0, TAU)
+	
+	if is_instance_valid(cursor_node):
+		cursor_node.position = Vector2.from_angle(current_angle) * config.radius
 	
 	for target in active_targets:
 		var movement = target.data.speed * target.data.direction * delta
@@ -94,7 +117,25 @@ func check_hit():
 		
 		if diff <= config.hit_window:
 			hits_achieved += 1
+			
+			var mask_node = target.node
+			var target_data = target.data
 			active_targets.remove_at(i)
+			
+			if target_data.hit_sound != null:
+				var audio_player = AudioStreamPlayer.new()
+				audio_player.stream = target_data.hit_sound
+				add_child(audio_player)
+				audio_player.play()
+				audio_player.finished.connect(audio_player.queue_free)
+			
+			var sprite_node = mask_node.get_child(0) as AnimatedSprite2D
+			if target_data.death_animation_name != "" and sprite_node.sprite_frames.has_animation(target_data.death_animation_name):
+				sprite_node.play(target_data.death_animation_name)
+				sprite_node.animation_finished.connect(mask_node.queue_free)
+			else:
+				mask_node.queue_free()
+			
 			hit_registered.emit(hits_achieved)
 			
 			if hits_achieved >= config.required_hits:
@@ -104,8 +145,4 @@ func check_hit():
 
 func _draw():
 	if config == null: return
-	
 	draw_arc(Vector2.ZERO, config.radius, 0, TAU, 64, Color.DIM_GRAY, 2.0)
-	
-	var cursor_pos = Vector2.from_angle(current_angle) * config.radius
-	draw_circle(cursor_pos, 10.0, Color.WHITE)

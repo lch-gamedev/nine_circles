@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TargetConfig" format=3 uid="uid://divbs5c3jg1nd"]
+
+[ext_resource type="Script" uid="uid://dou45yv1fe8fn" path="res://Target Resources/target_config.gd" id="1_3ad2k"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3ad2k"]
+
+[resource]
+script = ExtResource("1_3ad2k")
+frames = SubResource("SpriteFrames_3ad2k")
+metadata/_custom_type_script = "uid://dou45yv1fe8fn"
